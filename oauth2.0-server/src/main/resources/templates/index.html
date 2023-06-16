@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" href="./css/bootstrap.min.css"
-          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <title>统一认证中心</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
     <style>
         .loginForm {
             /*边框高度*/
@@ -39,22 +38,44 @@
         }
     </style>
 </head>
+
 <body>
 <div class="loginForm">
     <h2>用户登录</h2>
     <form>
+        <input id="appCode" hidden th:value="${appCode}">
+        <input id="redirectUrl" hidden th:value="${redirectUrl}">
         <div class="form-group">
             <label>用户名</label>
-            <input type="input" class="form-control" placeholder="请输入用户名">
+            <input required id="username" class="form-control" placeholder="请输入用户名">
         </div>
         <div class="form-group">
             <label>密码</label>
-            <input type="password" class="form-control" placeholder="请输入密码">
+            <input required id="password" type="password" class="form-control" placeholder="请输入密码">
         </div>
         <div class="button">
-            <input type="submit" class="btn btn-primary" value="登 录"/>
+            <input  type="button" class="btn btn-primary" value="登 录" onclick="login()"/>
         </div>
     </form>
 </div>
+<script type="text/javascript" src="./js/jquery-3.7.0.min.js"></script>
+<script type="text/javascript">
+    function login() {
+        let form={
+            username: $("#username").val(),
+            password: $("#password").val()
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/userLogin',
+            data: JSON.stringify(form),
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (resp) {
+                window.location = resp.data;
+            }
+        });
+    }
+</script>
 </body>
 </html>

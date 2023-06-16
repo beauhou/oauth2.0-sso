@@ -6,4 +6,5 @@ package com.oauth.server.manager;
  * @author BeauHou
  */
 public class AccessTokenManager {
+
 }

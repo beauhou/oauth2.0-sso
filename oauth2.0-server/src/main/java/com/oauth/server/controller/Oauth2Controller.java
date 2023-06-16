@@ -1,7 +1,7 @@
 package com.oauth.server.controller;
 
 import com.oauth.core.constant.HttpResultConstant;
-import com.oauth.server.Dto.OauthDetailsDTO;
+import com.oauth.server.model.OauthDetails;
 import com.oauth.server.service.Oauth2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +25,8 @@ public class Oauth2Controller {
      * @return
      */
     @GetMapping("access_token")
-    public HttpResultConstant getAccessToken(OauthDetailsDTO oauthDetailsDTO) {
-        oauth2Service.getAccessToken(oauthDetailsDTO);
+    public HttpResultConstant getAccessToken(OauthDetails details) {
+        oauth2Service.getAccessToken(details);
         return HttpResultConstant.success("");
     }
 

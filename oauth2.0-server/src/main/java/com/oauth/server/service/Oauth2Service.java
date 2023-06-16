@@ -1,6 +1,6 @@
 package com.oauth.server.service;
 
-import com.oauth.server.Dto.OauthDetailsDTO;
+import com.oauth.server.model.OauthDetails;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,7 +14,7 @@ public class Oauth2Service {
      *
      * @param oauthDetailsDTO
      */
-    public void getAccessToken(OauthDetailsDTO oauthDetailsDTO) {
+    public void getAccessToken(OauthDetails oauthDetailsDTO) {
 
     }
 

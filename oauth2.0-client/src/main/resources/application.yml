@@ -1,2 +1,10 @@
 server:
   port: 8100
+
+oauth2:
+  #  oauth2.0中心地址
+  oauthUrl: http://localhost:7100
+  #应用编码、需要oauth2服务端申请
+  app-code: demo
+  #应用秘钥
+  app-secret: demo

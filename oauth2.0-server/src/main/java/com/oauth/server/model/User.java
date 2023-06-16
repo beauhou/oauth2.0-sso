@@ -1,4 +1,4 @@
-package com.oauth.server.Dto;
+package com.oauth.server.model;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import lombok.Data;
  * @author BeauHou
  */
 @Data
-public class UserDto {
+public class User {
 
     /**
      * 账号
