@@ -1,11 +1,13 @@
 package com.oauth.server.model;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * @author BeauHou
  */
 @Data
+@Accessors(chain = true)
 public class User {
 
     /**
@@ -17,6 +19,7 @@ public class User {
      * 密码
      */
     private String password;
+
 
     /**
      * 重定向地址

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>统一认证中心</title>
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <style>
         .loginForm {
             /*边框高度*/
@@ -58,16 +58,18 @@
         </div>
     </form>
 </div>
-<script type="text/javascript" src="./js/jquery-3.7.0.min.js"></script>
+<script type="text/javascript" src="/js/jquery-3.7.0.min.js"></script>
 <script type="text/javascript">
     function login() {
         let form={
             username: $("#username").val(),
-            password: $("#password").val()
+            password: $("#password").val(),
+            appCode: $("#appCode").val(),
+            redirectUrl:$("#redirectUrl").val()
         }
         $.ajax({
             type: 'POST',
-            url: '/userLogin',
+            url: '/login',
             data: JSON.stringify(form),
             dataType: 'json',
             contentType: "application/json",

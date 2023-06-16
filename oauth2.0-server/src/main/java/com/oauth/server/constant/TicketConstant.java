@@ -1,7 +1,6 @@
 package com.oauth.server.constant;
 
-import com.oauth.server.controller.UserVo;
-import com.oauth.server.model.OauthDetails;
+import com.oauth.server.model.User;
 import lombok.Data;
 
 /**
@@ -11,12 +10,18 @@ import lombok.Data;
 public class TicketConstant {
 
     /**
-     * 用户信息
+     * 票据
      */
-    private UserVo userVo;
+    private String tct;
 
     /**
-     * oauth信息
+     * 应用编码
      */
-    private OauthDetails oauthDetails;
+    private String appCode;
+
+    /**
+     * 用户信息
+     */
+    private User user;
+
 }

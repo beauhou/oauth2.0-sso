@@ -1,7 +1,6 @@
 package com.oauth.server.constant;
 
-import com.oauth.server.controller.UserVo;
-import com.oauth.server.model.OauthDetails;
+import com.oauth.server.model.User;
 import lombok.Data;
 
 /**
@@ -11,12 +10,18 @@ import lombok.Data;
 public class CodeConstant {
 
     /**
-     * 用户信息
+     * 临时授权码
      */
-    private UserVo userVo;
+    private String code;
 
     /**
-     * oauth信息
+     * 用户信息
      */
-    private OauthDetails oauthDetails;
+    private User user;
+
+    /**
+     * 应用id
+     */
+    private String appId;
+
 }

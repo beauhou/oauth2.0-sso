@@ -31,4 +31,17 @@ public class OauthDetailsService {
                 .count() > 0;
     }
 
+
+    /**
+     * 验证app的编码和秘钥是否存在
+     *
+     * @param appCode   应用编码
+     * @param appSecret 应用秘钥
+     * @return true-应用编码和秘钥正确  false-编码与秘钥不正确
+     */
+    public boolean verifyAppCodeAndAppSecret(String appCode, String appSecret) {
+        return oauthDetailsList.stream().filter(val -> val.getAppCode().equals(appCode)
+                        && val.getAppSecret().equals(appSecret))
+                .count() > 0;
+    }
 }
