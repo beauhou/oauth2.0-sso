@@ -1,6 +1,7 @@
 package com.oauth.server.controller;
 
 import com.oauth.core.constant.HttpResultConstant;
+import com.oauth.server.model.OauthDetails;
 import com.oauth.server.model.User;
 import com.oauth.server.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ public class LoginController {
      */
     @PostMapping("login")
     @ResponseBody
-    public HttpResultConstant login(@RequestBody User user) {
-        return HttpResultConstant.success(loginService.userLogin(user));
+    public HttpResultConstant login(@RequestBody User user, OauthDetails oauthDetails) {
+        return HttpResultConstant.success(loginService.userLogin(user,oauthDetails));
     }
 
 

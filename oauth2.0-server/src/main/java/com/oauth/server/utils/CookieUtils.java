@@ -50,14 +50,13 @@ public class CookieUtils {
 
 
     /**
-     * 添加cookie
+     * 删除cookie
      *
-     * @param name
-     * @param value
-     * @param path
+     * @param name 名称
+     * @param path 路径
      */
-    public static void delete(String name, String value, String path) {
-        Cookie cookie = new Cookie(name, value);
+    public static void delete(String name, String path) {
+        Cookie cookie = new Cookie(name, null);
         if (path != null) {
             cookie.setPath(path);
         }

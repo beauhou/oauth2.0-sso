@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author BeauHou
@@ -43,5 +44,20 @@ public class OauthDetailsService {
         return oauthDetailsList.stream().filter(val -> val.getAppCode().equals(appCode)
                         && val.getAppSecret().equals(appSecret))
                 .count() > 0;
+    }
+
+    /**
+     * 通过应用编码和应用秘钥获取oauth应用信息
+     *
+     * @param appCode   应用编码
+     * @return true-应用编码和秘钥正确  false-编码与秘钥不正确
+     */
+    public OauthDetails getByAppCode(String appCode ) {
+        List<OauthDetails> oauthDetails = oauthDetailsList.stream().filter(val -> val.getAppCode().equals(appCode))
+                .collect(Collectors.toList());
+        if (oauthDetails.size()>0){
+            return oauthDetails.get(0);
+        }
+        return null;
     }
 }

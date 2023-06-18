@@ -3,8 +3,10 @@ package com.oauth.server.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.oauth.core.constant.RpcUser;
+import com.oauth.server.constant.TicketConstant;
 import com.oauth.server.manager.AccessTokenManager;
 import com.oauth.server.manager.CodeManager;
+import com.oauth.server.manager.TicketManager;
 import com.oauth.server.model.OauthDetails;
 import com.oauth.server.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,20 +28,36 @@ public class Oauth2Service {
     @Autowired
     private AccessTokenManager accessTokenManager;
 
+    @Autowired
+    private TicketManager ticketManager;
+
     /**
      * 用户登录
      */
     public String login(OauthDetails oauthDetails, Model model) {
-        if (!oauthDetailsService.appIdIsExist(oauthDetails.getAppCode())) {
+        OauthDetails queryOauthDetails = oauthDetailsService.getByAppCode(oauthDetails.getAppCode());
+        if (queryOauthDetails == null) {
             throw new RuntimeException("应用不存在");
         }
-        model.addAttribute("appCode", oauthDetails.getAppCode());
-        String redirectUrl = oauthDetails.getRedirectUrl();
-        if (StrUtil.isBlank(redirectUrl)) {
-            redirectUrl = "https://www.baidu.com";
+        TicketConstant localTicket = ticketManager.getLocalTicket();
+        //本地票据存在登录态，则直接生成授权码
+        if (localTicket != null) {
+            String code = codeManager.generationCode(localTicket.getUser());
+            String redirectUrl = oauthDetails.getRedirectUrl();
+            if (StrUtil.isBlank(redirectUrl)) {
+                redirectUrl = queryOauthDetails.getRedirectUrl();
+            }
+            return redirectUrl + "?code=" + code;
+        } else {
+            model.addAttribute("appCode", oauthDetails.getAppCode());
+            String redirectUrl = oauthDetails.getRedirectUrl();
+            if (StrUtil.isBlank(redirectUrl)) {
+                redirectUrl = queryOauthDetails.getRedirectUrl();
+            }
+            model.addAttribute("redirectUrl", redirectUrl);
+
+            return "index";
         }
-        model.addAttribute("redirectUrl", redirectUrl);
-        return "index";
     }
 
     /**
