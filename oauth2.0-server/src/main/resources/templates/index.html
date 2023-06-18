@@ -72,9 +72,10 @@
         $.ajax({
             type: 'POST',
             url: '/login',
-            data: JSON.stringify(form),
-            dataType: 'json',
-            contentType: "application/json",
+            // data: JSON.stringify(form),
+            data: form,
+            // dataType: 'json',
+            // contentType: "application/json",
             success: function (resp) {
                 if (resp.code!=200){
                     Alert.ok(resp.message);

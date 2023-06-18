@@ -47,7 +47,7 @@ public class Oauth2Service {
             if (StrUtil.isBlank(redirectUrl)) {
                 redirectUrl = queryOauthDetails.getRedirectUrl();
             }
-            return redirectUrl + "?code=" + code;
+            return "redirect:"+redirectUrl + "?code=" + code;
         } else {
             model.addAttribute("appCode", oauthDetails.getAppCode());
             String redirectUrl = oauthDetails.getRedirectUrl();
@@ -55,7 +55,6 @@ public class Oauth2Service {
                 redirectUrl = queryOauthDetails.getRedirectUrl();
             }
             model.addAttribute("redirectUrl", redirectUrl);
-
             return "index";
         }
     }

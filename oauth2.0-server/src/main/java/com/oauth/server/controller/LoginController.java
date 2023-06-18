@@ -7,7 +7,6 @@ import com.oauth.server.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -29,7 +28,7 @@ public class LoginController {
      */
     @PostMapping("login")
     @ResponseBody
-    public HttpResultConstant login(@RequestBody User user, OauthDetails oauthDetails) {
+    public HttpResultConstant login(User user, OauthDetails oauthDetails) {
         return HttpResultConstant.success(loginService.userLogin(user,oauthDetails));
     }
 

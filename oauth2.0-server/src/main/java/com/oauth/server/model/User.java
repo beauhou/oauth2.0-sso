@@ -25,4 +25,5 @@ public class User {
      * 重定向地址
      */
     private String redirectUrl;
+
 }
