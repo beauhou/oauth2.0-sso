@@ -1,6 +1,8 @@
 package com.oauth.server.service;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import com.oauth.core.constant.RpcUser;
 import com.oauth.server.manager.AccessTokenManager;
 import com.oauth.server.manager.CodeManager;
 import com.oauth.server.model.OauthDetails;
@@ -52,10 +54,26 @@ public class Oauth2Service {
         }
         User user = codeManager.getCode(code);
         if (user == null) {
-            throw new RuntimeException("用户信息不存在");
+            throw new RuntimeException("授权码不存在");
         }
         codeManager.removeCode(code);
         return accessTokenManager.generationAccessToken(user);
+    }
+
+
+    /**
+     * 获取accessToken
+     *
+     * @param oauthDetails
+     * @return
+     */
+    public RpcUser getAccessTokenInfo(OauthDetails oauthDetails, String accessToken) {
+        if (!oauthDetailsService.verifyAppCodeAndAppSecret(oauthDetails.getAppCode(), oauthDetails.getAppSecret())) {
+            throw new RuntimeException("应用编码或秘钥错误");
+        }
+        User user = accessTokenManager.get(accessToken);
+        RpcUser rpcUser = BeanUtil.copyProperties(user, RpcUser.class);
+        return rpcUser;
     }
 
     /**

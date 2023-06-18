@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>oauth2.0客户端</title>
+</head>
+<h1>你好</h1>
+<h1 id="username" ></h1>
+<div class="button">
+    <input  type="button" class="btn btn-primary" value="退 出" onclick="logout()"/>
+</div>
+<body>
+<script type="text/javascript" src="/js/jquery-3.7.0.min.js"></script>
+<script type="text/javascript">
+
+    function getMyInfo() {
+        $.ajax({
+            type: 'GET',
+            url: '/user/getMyInfo',
+            dataType: 'json',
+            headers: {
+                'access_token': localStorage.getItem("access_token"),
+            },
+            success: function (resp) {
+                $("#username").text(resp.data.username);
+            }
+        });
+    }
+    function logout() {
+        $.ajax({
+            type: 'GET',
+            url: '/user/logout',
+            dataType: 'json',
+            success: function (resp) {
+                localStorage.setItem("access_token",resp.data);
+            }
+        });
+    }
+    getMyInfo();
+</script>
+</body>
+</html>

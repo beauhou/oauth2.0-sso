@@ -59,7 +59,9 @@
     </form>
 </div>
 <script type="text/javascript" src="/js/jquery-3.7.0.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+
     function login() {
         let form={
             username: $("#username").val(),
@@ -74,7 +76,11 @@
             dataType: 'json',
             contentType: "application/json",
             success: function (resp) {
-                window.location = resp.data;
+                if (resp.code!=200){
+                    Alert.ok(resp.message);
+                }else {
+                    window.location = resp.data;
+                }
             }
         });
     }

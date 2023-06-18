@@ -8,3 +8,4 @@ oauth2:
   app-code: demo
   #应用秘钥
   app-secret: demo
+  anonymousAccess: ["/css/**","/js/**","/callback","/home"]

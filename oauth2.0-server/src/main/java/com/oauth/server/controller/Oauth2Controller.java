@@ -3,6 +3,7 @@ package com.oauth.server.controller;
 import com.oauth.core.constant.HttpResultConstant;
 import com.oauth.server.model.OauthDetails;
 import com.oauth.server.service.Oauth2Service;
+import com.oauth.server.utils.ServletUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +37,16 @@ public class Oauth2Controller {
     @GetMapping("access_token")
     public HttpResultConstant getAccessToken(OauthDetails details, String code) {
         return HttpResultConstant.success(oauth2Service.getAccessToken(details, code));
+    }
+
+    /**
+     * 获取登录用户信息
+     */
+    @ResponseBody
+    @GetMapping("access_token_info")
+    public HttpResultConstant getAccessTokenInfo(OauthDetails details) {
+        String accessToken = ServletUtils.getRequest().getHeader("access_token");
+        return HttpResultConstant.success(oauth2Service.getAccessTokenInfo(details, accessToken));
     }
 
     @ResponseBody

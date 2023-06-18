@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>oauth2.0客户端</title>
+</head>
+
+<body>
+<script type="text/javascript" src="/js/jquery-3.7.0.min.js"></script>
+<script type="text/javascript">
+
+    /**
+     * 获取请求参数
+     * @param name
+     * @returns {string}
+     */
+    function getQueryString(name) {
+        let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        let r = window.location.search.substr(1).match(reg); //获取url中"?"符后的字符串并正则匹配
+        let context = "";
+        if (r != null)
+            context = decodeURIComponent(r[2]);
+        reg = null;
+        r = null;
+        return context == null || context == "" || context == "undefined" ? "" : context;
+    }
+
+    function getAccessToken() {
+        $.ajax({
+            type: 'POST',
+            url: '/callback',
+            data: {
+                "code":getQueryString("code")
+            },
+            dataType: 'json',
+            success: function (resp) {
+                localStorage.setItem("access_token",resp.data);
+                window.location="/home";
+            }
+        });
+    }
+    getAccessToken();
+</script>
+</body>
+</html>

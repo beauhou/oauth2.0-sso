@@ -4,6 +4,9 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author BeauHou
  */
@@ -26,4 +29,9 @@ public class OauthPropertiesConfiguration {
      * 应用秘钥
      */
     private String appSecret;
+
+    /**
+     * 匿名访问地址
+     */
+    private List<String> anonymousAccess=new ArrayList<>();
 }
