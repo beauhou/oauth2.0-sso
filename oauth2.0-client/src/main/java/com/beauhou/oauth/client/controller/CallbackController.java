@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import com.beauhou.oauth.client.configuration.OauthPropertiesConfiguration;
+import com.beauhou.oauth.client.constant.HttpUrlConstant;
 import com.oauth.core.constant.HttpResultConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,13 +24,12 @@ public class CallbackController {
     private OauthPropertiesConfiguration oauthProperties;
 
     /**
-     * 客户端回调方法
+     * callback页面，专门处理oauth相关业务逻辑
      */
     @GetMapping
     public String callback() {
         return "callback";
     }
-
 
     /**
      * 客户端回调方法
@@ -39,10 +39,9 @@ public class CallbackController {
     @PostMapping
     @ResponseBody
     public HttpResultConstant callback(String code) {
-        String url = "/oauth2/access_token?appCode=demo&appSecret=demo&code=" + code;
+        String url = HttpUrlConstant.oauth2_get_access_token_url + "?appCode=demo&appSecret=demo&code=" + code;
         String body = HttpUtil.createGet(oauthProperties.getOauthUrl() + url)
                 .execute().body();
-        System.out.println(body);
         HttpResultConstant httpResultConstant = BeanUtil.copyProperties(new JSONObject(body), HttpResultConstant.class);
         return httpResultConstant;
     }

@@ -43,9 +43,8 @@ public class OauthClientFilter extends OncePerRequestFilter {
             if (rpcUser == null) {
                 String scheme = request.getScheme();
                 String host = ServletUtil.getHeaderIgnoreCase(request, "host");
-                String url = oauthPropertiesConfiguration.getOauthUrl() + "/oauth2/login?appCode=" + oauthPropertiesConfiguration.getAppCode()
-                        + "&redirectUrl=" + scheme + "://" + host + "/callback";
-                response.sendRedirect(url);
+                String callbackUrl = scheme + "://" + host + "/callback";
+                response.sendRedirect(oauthService.buildOauth2LoginUrl(callbackUrl));
                 return;
             } else {
                 try {
@@ -61,7 +60,7 @@ public class OauthClientFilter extends OncePerRequestFilter {
     private RpcUser RpcUser(HttpServletRequest request) {
         String accessToken = request.getHeader("access_token");
         String url = "/oauth2/access_token_info?appCode="
-                +oauthPropertiesConfiguration.getAppCode()+"&appSecret="+oauthPropertiesConfiguration.getAppSecret();
+                + oauthPropertiesConfiguration.getAppCode() + "&appSecret=" + oauthPropertiesConfiguration.getAppSecret();
         String accessTokenResult = HttpUtil.createGet(oauthPropertiesConfiguration.getOauthUrl() + url)
                 .header("access_token", accessToken)
                 .execute().body();
