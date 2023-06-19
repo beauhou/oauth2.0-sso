@@ -1,5 +1,7 @@
 package com.oauth.server.manager;
 
+import com.oauth.server.constant.CodeConstant;
+import com.oauth.server.constant.TicketConstant;
 import com.oauth.server.model.User;
 import org.springframework.stereotype.Service;
 
@@ -16,16 +18,21 @@ import java.util.UUID;
 public class CodeManager {
 
 
-    private Map<String, User> codeCacheMap = new HashMap<>();
+    private Map<String, CodeConstant> codeCacheMap = new HashMap<>();
 
     /**
      * 根据token生成授权码
      *
      * @return
      */
-    public String generationCode(User user) {
+    public String generationCode(User user, TicketConstant ticketConstant) {
         String code = UUID.randomUUID().toString();
-        codeCacheMap.put(code, user);
+        CodeConstant codeConstant = new CodeConstant();
+        codeConstant.setCode(code);
+        codeConstant.setUser(user);
+        codeConstant.setAppCode(ticketConstant.getAppCode());
+        codeConstant.setTicketConstant(ticketConstant);
+        codeCacheMap.put(code, codeConstant);
         return code;
     }
 
@@ -35,7 +42,7 @@ public class CodeManager {
      * @param code 临时授权码
      * @return
      */
-    public User getCode(String code) {
+    public CodeConstant getCode(String code) {
         return codeCacheMap.get(code);
     }
 

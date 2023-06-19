@@ -1,6 +1,8 @@
 package com.oauth.server.manager;
 
 import cn.hutool.core.lang.UUID;
+import com.oauth.server.constant.AccessTokenConstant;
+import com.oauth.server.constant.CodeConstant;
 import com.oauth.server.model.User;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +17,22 @@ import java.util.Map;
 @Service
 public class AccessTokenManager {
 
-    private Map<String, User> accessTokenMap = new HashMap<>();
+    private Map<String, AccessTokenConstant> accessTokenMap = new HashMap<>();
+
 
     /**
      * 生成token信息
      *
-     * @param user 用户信息
+     * @param codeConstant 授权码信息
      * @return
      */
-    public String generationAccessToken(User user) {
+    public String generationAccessToken(User user, CodeConstant codeConstant) {
         String accessToken = UUID.fastUUID().toString();
-        accessTokenMap.put(accessToken, user);
+        AccessTokenConstant accessTokenConstant = new AccessTokenConstant();
+        accessTokenConstant.setAccessToken(accessToken);
+        accessTokenConstant.setUser(user);
+        accessTokenConstant.setCodeConstant(codeConstant);
+        accessTokenMap.put(accessToken, accessTokenConstant);
         return accessToken;
     }
 
@@ -35,7 +42,16 @@ public class AccessTokenManager {
      * @param accessToken
      * @return 用户信息
      */
-    public User get(String accessToken) {
+    public AccessTokenConstant get(String accessToken) {
         return accessTokenMap.get(accessToken);
+    }
+
+    /**
+     * 退出登录
+     *
+     * @param accessToken
+     */
+    public void delete(String accessToken) {
+        accessTokenMap.remove(accessToken);
     }
 }

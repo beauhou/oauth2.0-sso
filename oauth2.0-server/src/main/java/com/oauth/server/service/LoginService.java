@@ -1,5 +1,6 @@
 package com.oauth.server.service;
 
+import com.oauth.server.constant.TicketConstant;
 import com.oauth.server.manager.CodeManager;
 import com.oauth.server.manager.TicketManager;
 import com.oauth.server.model.OauthDetails;
@@ -37,8 +38,8 @@ public class LoginService {
         if (queryUserInfo == null) {
             throw new RuntimeException("账号或密码错误");
         }
-        String code = codeManager.generationCode(queryUserInfo);
-        ticketManager.generationLocalTicketManager(queryUserInfo, oauthDetails.getAppCode());
+        TicketConstant ticketConstant = ticketManager.generationLocalTicketManager(queryUserInfo, oauthDetails.getAppCode());
+        String code = codeManager.generationCode(queryUserInfo,ticketConstant);
         String redirectUrl = user.getRedirectUrl();
         if (StringUtils.isEmpty(user.getRedirectUrl())) {
             redirectUrl = oauthDetails.getRedirectUrl();

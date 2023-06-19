@@ -7,26 +7,22 @@ import lombok.Data;
  * @author BeauHou
  */
 @Data
-public class CodeConstant {
+public class AccessTokenConstant {
 
     /**
-     * 临时授权码
+     * 令牌
      */
-    private String code;
+    private String accessToken;
 
     /**
      * 用户信息
      */
     private User user;
 
-    /**
-     * 应用id
-     */
-    private String appCode;
 
     /**
-     * 票据信息
+     * 本地票据
      */
-    private TicketConstant ticketConstant;
+    private CodeConstant codeConstant;
 
 }

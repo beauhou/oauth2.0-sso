@@ -3,12 +3,13 @@ package com.oauth.server.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.oauth.core.constant.RpcUser;
+import com.oauth.server.constant.AccessTokenConstant;
+import com.oauth.server.constant.CodeConstant;
 import com.oauth.server.constant.TicketConstant;
 import com.oauth.server.manager.AccessTokenManager;
 import com.oauth.server.manager.CodeManager;
 import com.oauth.server.manager.TicketManager;
 import com.oauth.server.model.OauthDetails;
-import com.oauth.server.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -42,12 +43,12 @@ public class Oauth2Service {
         TicketConstant localTicket = ticketManager.getLocalTicket();
         //本地票据存在登录态，则直接生成授权码
         if (localTicket != null) {
-            String code = codeManager.generationCode(localTicket.getUser());
+            String code = codeManager.generationCode(localTicket.getUser(), localTicket);
             String redirectUrl = oauthDetails.getRedirectUrl();
             if (StrUtil.isBlank(redirectUrl)) {
                 redirectUrl = queryOauthDetails.getRedirectUrl();
             }
-            return "redirect:"+redirectUrl + "?code=" + code;
+            return "redirect:" + redirectUrl + "?code=" + code;
         } else {
             model.addAttribute("appCode", oauthDetails.getAppCode());
             String redirectUrl = oauthDetails.getRedirectUrl();
@@ -69,12 +70,12 @@ public class Oauth2Service {
         if (!oauthDetailsService.verifyAppCodeAndAppSecret(oauthDetails.getAppCode(), oauthDetails.getAppSecret())) {
             throw new RuntimeException("应用编码或秘钥错误");
         }
-        User user = codeManager.getCode(code);
-        if (user == null) {
+        CodeConstant codeConstant = codeManager.getCode(code);
+        if (codeConstant == null) {
             throw new RuntimeException("授权码不存在");
         }
         codeManager.removeCode(code);
-        return accessTokenManager.generationAccessToken(user);
+        return accessTokenManager.generationAccessToken(codeConstant.getUser(), codeConstant);
     }
 
 
@@ -88,8 +89,8 @@ public class Oauth2Service {
         if (!oauthDetailsService.verifyAppCodeAndAppSecret(oauthDetails.getAppCode(), oauthDetails.getAppSecret())) {
             throw new RuntimeException("应用编码或秘钥错误");
         }
-        User user = accessTokenManager.get(accessToken);
-        RpcUser rpcUser = BeanUtil.copyProperties(user, RpcUser.class);
+        AccessTokenConstant accessTokenConstant = accessTokenManager.get(accessToken);
+        RpcUser rpcUser = BeanUtil.copyProperties(accessTokenConstant.getUser(), RpcUser.class);
         return rpcUser;
     }
 
@@ -98,5 +99,20 @@ public class Oauth2Service {
      */
     public void refreshToken() {
 
+    }
+
+    /**
+     * 退出登录
+     *
+     * @param accessToken
+     */
+    public void logout(String accessToken) {
+        AccessTokenConstant accessTokenConstant = accessTokenManager.get(accessToken);
+        accessTokenManager.delete(accessToken);
+        CodeConstant codeConstant = accessTokenConstant.getCodeConstant();
+        if (codeConstant != null) {
+            String tct = codeConstant.getTicketConstant().getTct();
+            ticketManager.deleteLocalTicketManager(tct);
+        }
     }
 }

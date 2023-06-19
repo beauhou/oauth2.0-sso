@@ -1,4 +1,4 @@
-package com.oauth.server.utils;
+package com.oauth.core.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

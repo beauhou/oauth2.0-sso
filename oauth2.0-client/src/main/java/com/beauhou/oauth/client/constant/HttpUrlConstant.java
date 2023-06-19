@@ -17,5 +17,10 @@ public class HttpUrlConstant {
      */
     public static final String oauth2_get_access_token_url = "/oauth2/access_token";
 
+    /**
+     * 退出登录地址
+     */
+    public static final String oauth2_logout_url = "/oauth2/logout";
+
 
 }

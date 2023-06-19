@@ -31,8 +31,13 @@
             type: 'GET',
             url: '/user/logout',
             dataType: 'json',
+            headers: {
+                'access_token': localStorage.getItem("access_token"),
+            },
             success: function (resp) {
-                localStorage.setItem("access_token",resp.data);
+                if(resp.code===200){
+                    localStorage.clear();
+                }
             }
         });
     }

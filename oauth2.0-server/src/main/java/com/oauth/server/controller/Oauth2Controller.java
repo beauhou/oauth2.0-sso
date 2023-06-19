@@ -1,9 +1,9 @@
 package com.oauth.server.controller;
 
 import com.oauth.core.constant.HttpResultConstant;
+import com.oauth.core.utils.ServletUtils;
 import com.oauth.server.model.OauthDetails;
 import com.oauth.server.service.Oauth2Service;
-import com.oauth.server.utils.ServletUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,4 +56,16 @@ public class Oauth2Controller {
         return HttpResultConstant.success("");
     }
 
+    /**
+     * 退出登录
+     *
+     * @return
+     */
+    @ResponseBody
+    @GetMapping(value = "/logout")
+    public HttpResultConstant logout() {
+        String accessToken = ServletUtils.getRequest().getHeader("access_token");
+        oauth2Service.logout(accessToken);
+        return HttpResultConstant.success("");
+    }
 }

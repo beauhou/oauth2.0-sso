@@ -1,4 +1,4 @@
-package com.oauth.server.utils;
+package com.oauth.core.utils;
 
 import org.springframework.util.StringUtils;
 

@@ -1,8 +1,8 @@
 package com.oauth.server.manager;
 
+import com.oauth.core.utils.CookieUtils;
 import com.oauth.server.constant.TicketConstant;
 import com.oauth.server.model.User;
-import com.oauth.server.utils.CookieUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -24,8 +24,10 @@ public class TicketManager {
 
     /**
      * 生成本地票据
+     *
+     * @return
      */
-    public void generationLocalTicketManager(User user, String appCode) {
+    public TicketConstant generationLocalTicketManager(User user, String appCode) {
         String ticketCode = UUID.randomUUID().toString();
         TicketConstant ticketConstant = new TicketConstant();
         ticketConstant.setAppCode(appCode);
@@ -33,6 +35,7 @@ public class TicketManager {
         ticketConstant.setTct(ticketCode);
         map.put(ticketCode, ticketConstant);
         CookieUtils.addCookie(ticketKey, ticketCode, "/");
+        return ticketConstant;
     }
 
     /**
@@ -49,6 +52,6 @@ public class TicketManager {
      * 删除本地票据
      */
     public void deleteLocalTicketManager(String tct) {
-        map.remove(ticketKey);
+        map.remove(tct);
     }
 }
