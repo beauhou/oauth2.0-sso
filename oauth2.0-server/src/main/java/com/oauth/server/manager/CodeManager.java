@@ -20,6 +20,8 @@ public class CodeManager {
 
     private Map<String, CodeConstant> codeCacheMap = new HashMap<>();
 
+
+
     /**
      * 根据token生成授权码
      *
